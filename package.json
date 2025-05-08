@@ -1,0 +1,25 @@
+{
+  "name": "express-blog-api-crud",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AngelaFerraro18/express-blog-api-crud.git"
+  },
+  "keywords": [],
+  "author": "Angela Ferraro",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AngelaFerraro18/express-blog-api-crud/issues"
+  },
+  "homepage": "https://github.com/AngelaFerraro18/express-blog-api-crud#readme",
+  "dependencies": {
+    "express": "^4.21.2",
+    "mysql2": "^3.14.1"
+  }
+}
