@@ -1,20 +1,18 @@
-//importo l'array di oggetti che è stato fornito
-const posts = require('../data/posts.js');
+//importo connection
+const connection = require('../data/db.js');
 
 //index
 function index(req, res) {
-    // pluto.get(); ---> aggiunto per testare l'errore in postman
-    //la lista dei post sarà inizialmente uguale all'originale fornita
-    let filteredPost = posts;
 
-    //filtro per vedere se il tag è presente
-    if (req.query.tag) {
+    //salvo in una variabile la query per poter visualizzare i blog
+    const sqlBlog = `SELECT * FROM posts`;
 
-        filteredPost = posts.filter(post => post.tags.includes(req.query.tag));
-    }
-    console.log(filteredPost);
-    //mando in risposta gli elementi risultanti della ricerca
-    res.json(filteredPost);
+    //vado ad eseguire la query grazie a connection
+    connection.query(sqlBlog, (err, results) => {
+        if (err) return res.status(500).json({ error: 'Posts non trovati!' });
+        res.json(results);
+    })
+
 }
 
 //show
@@ -115,18 +113,18 @@ function modify(req, res) {
     }
 
     //aggiorno alcuni dati del post
-    if(currentPost.title){
-        currentPost.title = req.body.title; 
+    if (currentPost.title) {
+        currentPost.title = req.body.title;
     }
 
-    if(currentPost.content){
+    if (currentPost.content) {
         currentPost.content = req.body.content;
     }
 
-    if(currentPost.image){
+    if (currentPost.image) {
         currentPost.image = req.body.image;
     }
-   
+
     console.log(currentPost);
 
     //restituisco il post modificato nelle parti che ho scelto in json
