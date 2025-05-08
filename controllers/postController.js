@@ -22,10 +22,25 @@ function show(req, res) {
     //salvo in una variabile la query per poter visualizzare un blog
     const sqlBlogShow = `SELECT * FROM posts WHERE id= ?`;
 
-    connection.query(sqlBlogShow, [id], (err, results) => {
+    //salvo in una variabile la query per poter avere accesso ai tag 
+    const sqlPostsTags = `SELECT *
+                            FROM
+                                tags
+                            JOIN post_tag ON tags.id = post_tag.tag_id
+                            WHERE post_tag.post_id = ?`
+
+    connection.query(sqlBlogShow, [id], (err, postResults) => {
         if (err) return res.status(500).json({ error: 'Ricerca del post fallita!' });
-        if (results.length === 0) return res.status(404).json({ error: 'Post non trovato!' });
-        res.json(results[0]);
+        if (postResults.length === 0) return res.status(404).json({ error: 'Post non trovato!' });
+
+        const post = postResults[0];
+
+        connection.query(sqlPostsTags, [id], (err, tagsResults) => {
+            if (err) return res.status(500).json({ error: 'Database query fallita!' });
+
+            post.tags = tagsResults;
+            res.json(post);
+        })
     })
 }
 
