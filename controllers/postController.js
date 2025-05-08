@@ -134,28 +134,15 @@ function modify(req, res) {
 //destroy
 function destroy(req, res) {
     let id = parseInt(req.params.id);
-    let currentPost = posts.find(post => id === post.id);
 
-    //verifico se l'elemento esiste o meno
-    if (!currentPost) {
+    //salvo in una variabile la quey per cancellare un post
+    const sqlBlogDelete = `DELETE FROM posts WHERE id= ?`;
 
-        //imposto lo status con il codice 404 
-        res.status(404);
-
-        return res.json({
-            status: '404',
-            error: 'Not Found',
-            message: 'Post non trovato'
-        })
-    }
-
-    //uso il metodo degli array splice
-    posts.splice(posts.indexOf(currentPost), 1);
-    //stampo in console l'array aggiornato
-    console.log(posts);
-
-    //mando come risposta lo stato "204 no Content"
-    res.sendStatus(204);
+    //eseguo l'eliminazione del post
+    connection.query(sqlBlogDelete, [id], (err) => {
+        if (err) return res.status(500).json({ error: `Errore nell'eliminazione del post!` });
+        res.sendStatus(204)
+    });
 }
 
 
