@@ -38,7 +38,7 @@ function show(req, res) {
         connection.query(sqlPostsTags, [id], (err, tagsResults) => {
             if (err) return res.status(500).json({ error: 'Database query fallita!' });
 
-            post.tags = tagsResults;
+            post.tags = tagsResults.map(tag => tag.label);
             res.json(post);
         })
     })
